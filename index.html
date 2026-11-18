@@ -1,8 +1,8 @@
 <!doctype html>
 <!--
-Gemini Microlearning — ISD Test Build v6.1
+Gemini Microlearning — ISD Test Build v6
 Standalone HTML prototype for independent instructional design review.
-Title screen added to the v6 instructional sequence. All existing instructional interactions remain unchanged.
+Content-reviewed revision based on v5.2. Functionality remains unchanged from the validated v5.1 baseline.
 No backend, LMS connection, localStorage, or sessionStorage is used by this prototype.
 Learner-entered content remains in page memory for the active browser session only.
 -->
@@ -11,7 +11,7 @@ Learner-entered content remains in page memory for the active browser session on
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Gemini Microlearning — Prototype v6.1 (Screens 1–25)</title>
+<title>Gemini Microlearning — Prototype v6 (Screens 1–24)</title>
 <style>
 :root{
   font-family:Arial,"Helvetica Neue",Helvetica,sans-serif;
@@ -314,7 +314,7 @@ strong{font-weight:700}
 </style>
 </head>
 <body>
-<header><div class="wrap topline"><div><div class="brand">Gemini Microlearning</div><div class="prototype">Prototype v6.1 — Screens 1–25</div></div><div id="progress" class="progress"></div></div></header>
+<header><div class="wrap topline"><div><div class="brand">Gemini Microlearning</div><div class="prototype">Prototype v6 — Screens 1–24</div></div><div id="progress" class="progress"></div></div></header>
 <main><div class="wrap"><section id="app" class="card" aria-live="polite"></section></div></main>
 <script>
 "use strict";
@@ -344,8 +344,8 @@ const getVal=id=>document.getElementById(id)?.value.trim()||"";
 function next(n){screen=n;render();window.scrollTo(0,0);}
 function openGemini(){window.open("https://gemini.google.com/","_blank","noopener,noreferrer");}
 function shell(title,body){
- progress.textContent=`Screen ${screen} of 25`;
- app.innerHTML=`<div class="screenlabel">Screen ${screen} of 25</div><h1>${title}</h1>${body}`;
+ progress.textContent=`Screen ${screen} of 24`;
+ app.innerHTML=`<div class="screenlabel">Screen ${screen} of 24</div><h1>${title}</h1>${body}`;
 }
 function artifact(label,value){return `<h2>${label}</h2><div class="artifact">${esc(value||"[Not entered yet]")}</div>`;}
 function ensureWorking(){if(!state.workingRequest) state.workingRequest=state.originalRequest;}
@@ -354,66 +354,66 @@ function saveRequest(){
  if(!value){alert("Enter your work request first.");return;}
  state.originalRequest=value;
  state.workingRequest=value;
- next(4);
+ next(3);
 }
 function saveResponse(){
  const value=getVal("origresp");
  if(!value){alert("Enter or paste the relevant part of Gemini’s response first.");return;}
  state.originalResponse=value;
- next(5);
+ next(4);
 }
 function saveInference(){
  const value=getVal("inference");
  if(!value){alert("Enter or paste the relevant part of Gemini’s response first.");return;}
  state.inferenceResponse=value;
- next(7);
+ next(6);
 }
 function taskChoice(choice){
  ensureWorking(); state.taskDecision=choice;
- if(choice==="yes") next(10); else render();
+ if(choice==="yes") next(9); else render();
 }
 function saveTaskRevision(){
  const value=getVal("workingTask");
  if(!value){alert("Enter your revised request first.");return;}
- state.workingRequest=value; next(10);
+ state.workingRequest=value; next(9);
 }
 function contextChoice(choice){
  ensureWorking(); state.contextDecision=choice;
- if(choice==="yes") next(12); else render();
+ if(choice==="yes") next(11); else render();
 }
 function saveContextRevision(){
  const value=getVal("workingContext");
  if(!value){alert("Enter your revised request first.");return;}
- state.workingRequest=value; next(12);
+ state.workingRequest=value; next(11);
 }
 function expectationChoice(choice){
  ensureWorking(); state.expectationDecision=choice;
- if(choice==="yes") next(14); else render();
+ if(choice==="yes") next(13); else render();
 }
 function saveExpectationRevision(){
  const value=getVal("workingExpectation");
  if(!value){alert("Enter your revised request first.");return;}
- state.workingRequest=value; next(14);
+ state.workingRequest=value; next(13);
 }
 function saveInformationNeeded(){
  const value=getVal("informationNeeded");
  if(!value){alert("Identify the information Gemini would need for the task first.");return;}
- state.informationNeeded=value; next(17);
+ state.informationNeeded=value; next(16);
 }
 function saveRevisedResponse(){
  const value=getVal("revisedResponse");
  if(!value){alert("Enter or paste the relevant part of Gemini's revised response first.");return;}
  state.revisedResponse=value;
  state.usabilityDecision="";
- next(20);
+ next(19);
 }
 function usabilityChoice(choice){
  state.usabilityDecision=choice;
  if(choice==="yes"){
    state.currentUsableResponse=state.revisedResponse;
-   next(23);
+   next(22);
  } else {
-   next(21);
+   next(20);
  }
 }
 function savePurposefulRevision(){
@@ -421,7 +421,7 @@ function savePurposefulRevision(){
  if(!value){alert("Enter the revision you want to make before continuing.");return;}
  state.purposefulRevision=value;
  state.iterativeResponse="";
- next(22);
+ next(21);
 }
 function iterativeUsabilityChoice(choice){
  const value=getVal("iterativeResponse");
@@ -429,15 +429,15 @@ function iterativeUsabilityChoice(choice){
  state.iterativeResponse=value;
  if(choice==="yes"){
    state.currentUsableResponse=value;
-   next(23);
+   next(22);
  } else {
    state.iterativeResponse="";
-   next(21);
+   next(20);
  }
 }
 function verificationChoice(choice){
  state.verificationDecision=choice;
- if(choice==="yes") next(25);
+ if(choice==="yes") next(24);
  else render();
 }
 function verificationFollowup(choice){
@@ -447,14 +447,14 @@ function verificationFollowup(choice){
  } else if(choice==="revise"){
    state.verificationDecision="revise";
    state.iterativeResponse="";
-   next(21);
+   next(20);
  }
 }
 function finishActivity(){
  for(const key of Object.keys(state)){
    if(typeof state[key]==="string") state[key]="";
  }
- screen=25;
+ screen=24;
  state.completionMessage="Activity complete. Temporary session information has been cleared.";
  render();
 }
@@ -463,18 +463,13 @@ function render(){
  ensureWorking();
 
  if(screen===1){
-  shell("AI Prompt Writing 101",`
-   <p class="lead">Learn how to give AI clearer instructions, review its responses, and make informed decisions about the results.</p>
-   <div class="actions"><button class="primary" onclick="next(2)">Continue</button></div>`);
- }
- else if(screen===2){
   shell("Set Up the Two-Tab Experience",`
    <p class="lead">In this activity, you will switch between this microlearning and Gemini in two browser tabs.</p>
    <p>Select the <strong>Open Gemini in a New Tab</strong> button below. Leave Gemini open throughout this microlearning. You will switch between this microlearning and Gemini as you work.</p>
    <div class="warning"><strong>Prototype privacy:</strong> Anything you enter here exists only in this browser page's memory. It is not saved to local storage, sent to an LMS, or transmitted anywhere by this prototype. Refreshing or closing the page will discard it.</div>
-   <div class="actions"><button onclick="openGemini()">Open Gemini in a New Tab</button><button class="primary" onclick="next(3)">Continue</button></div>`);
+   <div class="actions"><button onclick="openGemini()">Open Gemini in a New Tab</button><button class="primary" onclick="next(2)">Continue</button></div>`);
  }
- else if(screen===3){
+ else if(screen===2){
   shell("Provide Your Work Request",`
    <p>Think of a real work request Gemini could help you address. Enter it in the text field below exactly as you would normally ask it.</p>
    <label for="original"><strong>Your Original Request</strong></label>
@@ -483,7 +478,7 @@ function render(){
    <p>Switch to the Gemini tab. Paste your copied text into the Gemini text field and then submit the request. Review Gemini's response without revising it yet. Then switch back to this tab and then select Continue below.</p>
    <div class="actions"><button class="primary" onclick="saveRequest()">Continue</button></div>`);
  }
- else if(screen===4){
+ else if(screen===3){
   shell("Capture the Relevant Part of Gemini’s Response",`
    ${artifact("Your Original Request",state.originalRequest)}
    <p>Review what Gemini produced and identify the information that represents the work you asked it to perform. Copy that information and paste it into the text field below.</p>
@@ -497,9 +492,9 @@ function render(){
    </div>
    <label for="origresp"><strong>Gemini's Original Response</strong></label>
    <textarea id="origresp">${esc(state.originalResponse)}</textarea>
-   <div class="actions"><button onclick="next(3)">Back</button><button class="primary" onclick="saveResponse()">Continue</button></div>`);
+   <div class="actions"><button onclick="next(2)">Back</button><button class="primary" onclick="saveResponse()">Continue</button></div>`);
  }
- else if(screen===5){
+ else if(screen===4){
   const diag="What information did you have to infer from my original prompt? What assumptions did you have to make to produce your response? What information in my prompt or our conversation led you to make those inferences or assumptions?";
   shell("Ask Gemini What It Had to Decide",`
    ${artifact("Your Original Request",state.originalRequest)}
@@ -508,9 +503,9 @@ function render(){
    <div class="artifact">${esc(diag)}</div>
    <p>Click and drag over all of the text in the field to highlight it. Use your normal copy method (ex.: Ctrl+C or right-click and select Copy) to copy your prompt.</p>
    <p>Switch to the Gemini tab. Paste your copied text into the Gemini text field and then submit the request. Review Gemini's response without revising it yet. Then switch back to this tab and then select Continue below.</p>
-   <div class="actions"><button onclick="next(4)">Back</button><button class="primary" onclick="next(6)">Continue</button></div>`);
+   <div class="actions"><button onclick="next(3)">Back</button><button class="primary" onclick="next(5)">Continue</button></div>`);
  }
- else if(screen===6){
+ else if(screen===5){
   shell("Examine What Happened",`
    ${artifact("Your Original Request",state.originalRequest)}
    ${artifact("Gemini's Original Response",state.originalResponse)}
@@ -524,16 +519,16 @@ function render(){
     <li>Were there assumptions made by Gemini that might have changed the response from what you anticipated?</li>
     <li>Which decisions were reasonable for Gemini to make—and which would you rather control?</li>
    </ul>
-   <div class="actions"><button onclick="next(5)">Back</button><button class="primary" onclick="saveInference()">Continue</button></div>`);
+   <div class="actions"><button onclick="next(4)">Back</button><button class="primary" onclick="saveInference()">Continue</button></div>`);
  }
- else if(screen===7){
+ else if(screen===6){
   shell("Make the Distinction",`
    ${artifact("Gemini's Assumptions and Inferences",state.inferenceResponse)}
    <p class="lead"><strong>What should you decide—and what are you comfortable allowing Gemini to decide?</strong></p>
    <p><strong>Effective use of AI begins with deliberately making that distinction.</strong></p>
-   <div class="actions"><button onclick="next(6)">Back</button><button class="primary" onclick="next(8)">Next: Direct Gemini</button></div>`);
+   <div class="actions"><button onclick="next(5)">Back</button><button class="primary" onclick="next(7)">Next: Direct Gemini</button></div>`);
  }
- else if(screen===8){
+ else if(screen===7){
   shell("Direct Gemini",`
    <p>Gemini's response was shaped by the direction you provided—and by what it had to infer when information was missing.</p>
    <p>You can provide more deliberate direction by considering three questions:</p>
@@ -544,9 +539,9 @@ function render(){
    </ul>
    <p>These aren't a formula for creating a perfect prompt. They are a repeatable way to think about providing directions when working with Gemini.</p>
    <p>You'll use these three questions to examine and revise this request.</p>
-   <div class="actions"><button onclick="next(7)">Back</button><button class="primary" onclick="next(9)">Continue</button></div>`);
+   <div class="actions"><button onclick="next(6)">Back</button><button class="primary" onclick="next(8)">Continue</button></div>`);
  }
- else if(screen===9){
+ else if(screen===8){
   const revise = state.taskDecision==="no";
   shell("What Do You Want Gemini to Do?",`
    ${artifact("Your Original Request",state.originalRequest)}
@@ -562,17 +557,17 @@ function render(){
     <textarea id="workingTask">${esc(state.workingRequest)}</textarea>
     <p class="muted"><strong>Don't submit it to Gemini yet.</strong> You'll continue developing this request in the next few screens.</p>
     <div class="actions"><button class="primary" onclick="saveTaskRevision()">Save Revision and Continue</button></div>` : ``}
-   <div class="actions"><button onclick="next(8)">Back</button></div>`);
+   <div class="actions"><button onclick="next(7)">Back</button></div>`);
  }
- else if(screen===10){
+ else if(screen===9){
   shell("What Does Gemini Need to Know?",`
    <p>Context helps Gemini understand the task. Depending on the work, useful context might include who the work is for, why it is needed, relevant background, constraints, or other information that affects how the task should be completed.</p>
    <p>You don't need to provide everything you know. Provide context that matters to the task.</p>
    ${artifact("Your Working Request",state.workingRequest)}
    <p>Next, you'll decide whether Gemini has the context it needs to understand what you want.</p>
-   <div class="actions"><button onclick="next(9)">Back</button><button class="primary" onclick="next(11)">Continue</button></div>`);
+   <div class="actions"><button onclick="next(8)">Back</button><button class="primary" onclick="next(10)">Continue</button></div>`);
  }
- else if(screen===11){
+ else if(screen===10){
   const revise = state.contextDecision==="no";
   shell("Evaluate and Revise Context",`
    ${artifact("Your Working Request",state.workingRequest)}
@@ -591,16 +586,16 @@ function render(){
     <textarea id="workingContext">${esc(state.workingRequest)}</textarea>
     <p class="muted"><strong>Don't submit it to Gemini yet.</strong></p>
     <div class="actions"><button class="primary" onclick="saveContextRevision()">Save Revision and Continue</button></div>` : ``}
-   <div class="actions"><button onclick="next(10)">Back</button></div>`);
+   <div class="actions"><button onclick="next(9)">Back</button></div>`);
  }
- else if(screen===12){
+ else if(screen===11){
   shell("What Should a Useful Result Look Like?",`
    <p>Task and context help Gemini understand what you want. Expectations help communicate what makes the response useful, which might also include organization, level of detail, tone, length, or required information.</p>
    <p>You don't need to specify every characteristic of the response. Focus on the characteristics that matter to how you will use Gemini to perform your request.</p>
    ${artifact("Your Working Request",state.workingRequest)}
-   <div class="actions"><button onclick="next(11)">Back</button><button class="primary" onclick="next(13)">Continue</button></div>`);
+   <div class="actions"><button onclick="next(10)">Back</button><button class="primary" onclick="next(12)">Continue</button></div>`);
  }
- else if(screen===13){
+ else if(screen===12){
   const revise = state.expectationDecision==="no";
   shell("Evaluate and Revise Expectations",`
    ${artifact("Your Working Request",state.workingRequest)}
@@ -614,9 +609,9 @@ function render(){
     <textarea id="workingExpectation">${esc(state.workingRequest)}</textarea>
     <p class="muted"><strong>Don't submit it to Gemini yet.</strong></p>
     <div class="actions"><button class="primary" onclick="saveExpectationRevision()">Save Revision and Continue</button></div>` : ``}
-   <div class="actions"><button onclick="next(12)">Back</button></div>`);
+   <div class="actions"><button onclick="next(11)">Back</button></div>`);
  }
- else if(screen===14){
+ else if(screen===13){
   shell("Review Your Revised Request",`
    <p>You have now considered three things that can help you provide clearer direction to Gemini:</p>
    <ul>
@@ -629,9 +624,9 @@ function render(){
    <p><strong>Don't submit your revised request to Gemini yet.</strong></p>
    <p>Clear direction is only part of the interaction. Before asking Gemini to respond again, consider one more question:</p>
    <p class="lead"><strong>What information does Gemini need to perform the task?</strong></p>
-   <div class="actions"><button onclick="next(13)">Back</button><button class="primary" onclick="next(15)">Continue</button></div>`);
+   <div class="actions"><button onclick="next(12)">Back</button><button class="primary" onclick="next(14)">Continue</button></div>`);
  }
- else if(screen===15){
+ else if(screen===14){
   shell("Give Gemini the Information It Needs",`
    <p>Giving AI clear direction is only part of the interaction. The AI also needs the right information to work with.</p>
    <p class="lead"><strong>What information would a knowledgeable person need to complete this task?</strong></p>
@@ -642,9 +637,9 @@ function render(){
    <p>Consider what is actually relevant to the task. Providing unnecessary, outdated, or unrelated information can make it harder for the AI to determine what matters.</p>
    ${artifact("Your Working Request",state.workingRequest)}
    <p>Next, consider what information Gemini would need to complete this request successfully.</p>
-   <div class="actions"><button onclick="next(14)">Back</button><button class="primary" onclick="next(16)">Continue</button></div>`);
+   <div class="actions"><button onclick="next(13)">Back</button><button class="primary" onclick="next(15)">Continue</button></div>`);
  }
- else if(screen===16){
+ else if(screen===15){
   shell("Identify the Information Gemini Needs",`
    ${artifact("Your Working Request",state.workingRequest)}
    <p class="lead"><strong>What information does Gemini need to perform your task effectively?</strong></p>
@@ -652,9 +647,9 @@ function render(){
    <label for="informationNeeded"><strong>Information Gemini would need</strong></label>
    <textarea id="informationNeeded">${esc(state.informationNeeded)}</textarea>
    <p class="muted">Describe the information only. Do not paste, upload, or attach the actual source information here.</p>
-   <div class="actions"><button onclick="next(15)">Back</button><button class="primary" onclick="saveInformationNeeded()">Continue</button></div>`);
+   <div class="actions"><button onclick="next(14)">Back</button><button class="primary" onclick="saveInformationNeeded()">Continue</button></div>`);
  }
- else if(screen===17){
+ else if(screen===16){
   shell("There Is More to Consider",`
    <p>Knowing what information Gemini needs is only part of the decision.</p>
    <h2>Technical consideration — Can Gemini access and use the information?</h2>
@@ -662,9 +657,9 @@ function render(){
    <h2>Operational consideration — Should the information be used?</h2>
    <p>Consider whether the information is appropriate for the task, permitted for use with the AI, sufficiently current and reliable, and appropriate for the way the resulting work will be used.</p>
    <p>These considerations often happen at the same time. Information can be useful for a task but unavailable to the AI. It can be technically accessible but inappropriate to use. Or the AI may have access to information that is not the right source for the work.</p>
-   <div class="actions"><button onclick="next(16)">Back</button><button class="primary" onclick="next(18)">Continue</button></div>`);
+   <div class="actions"><button onclick="next(15)">Back</button><button class="primary" onclick="next(17)">Continue</button></div>`);
  }
- else if(screen===18){
+ else if(screen===17){
   shell("Review the Information You Identified",`
    ${artifact("Your Working Request",state.workingRequest)}
    ${artifact("Information You Identified",state.informationNeeded)}
@@ -672,9 +667,9 @@ function render(){
    <p><strong>Can Gemini access and use the information in your approved AI environment?</strong></p>
    <p><strong>Should the information be used for this task?</strong> Consider whether it is appropriate, permitted, sufficiently current and reliable, and suitable for the way the resulting work will be used.</p>
    <p>Use your judgment to determine what information, if any, you should provide or make available to Gemini when you continue.</p>
-   <div class="actions"><button onclick="next(17)">Back</button><button class="primary" onclick="next(19)">Continue</button></div>`);
+   <div class="actions"><button onclick="next(16)">Back</button><button class="primary" onclick="next(18)">Continue</button></div>`);
  }
- else if(screen===19){
+ else if(screen===18){
   shell("Now Try Your Revised Request",`
    ${artifact("Your Revised Request",state.workingRequest)}
    ${artifact("Information You Identified",state.informationNeeded)}
@@ -685,9 +680,9 @@ function render(){
    <div class="example"><strong>For example:</strong> if Gemini drafted an email, capture the email body and, if useful, the subject line. You do not need to copy interface controls or connected-app elements that are not part of the work you asked Gemini to perform.</div>
    <label for="revisedResponse"><strong>Gemini's Revised Response</strong></label>
    <textarea id="revisedResponse">${esc(state.revisedResponse)}</textarea>
-   <div class="actions"><button onclick="next(18)">Back</button><button class="primary" onclick="saveRevisedResponse()">Save Response and Continue</button></div>`);
+   <div class="actions"><button onclick="next(17)">Back</button><button class="primary" onclick="saveRevisedResponse()">Save Response and Continue</button></div>`);
  }
- else if(screen===20){
+ else if(screen===19){
   shell("Is the Response Usable?",`
    ${artifact("Your Revised Request",state.workingRequest)}
    ${artifact("Gemini's Revised Response",state.revisedResponse)}
@@ -695,9 +690,9 @@ function render(){
    <p class="lead"><strong>Can this response accomplish the task or request you originally gave Gemini?</strong></p>
    <button class="choice" onclick="usabilityChoice('yes')"><strong>Yes — This response is usable for my original task</strong></button>
    <button class="choice" onclick="usabilityChoice('no')"><strong>No — This response does not yet accomplish my original task</strong></button>
-   <div class="actions"><button onclick="next(19)">Back</button></div>`);
+   <div class="actions"><button onclick="next(18)">Back</button></div>`);
  }
- else if(screen===21){
+ else if(screen===20){
   shell("Make a Purposeful Change",`
    ${artifact("Your Original Request",state.originalRequest)}
    ${artifact("Current Gemini Response",state.currentUsableResponse || state.revisedResponse)}
@@ -717,7 +712,7 @@ function render(){
    <p class="muted"><strong>Do not submit it to Gemini yet.</strong> Save it here first. On the next screen, you will take this revision back to the same Gemini conversation.</p>
    <div class="actions"><button class="primary" onclick="savePurposefulRevision()">Save Revision and Continue</button></div>`);
  }
- else if(screen===22){
+ else if(screen===21){
   shell("Review the New Response",`
    ${artifact("Your Purposeful Revision",state.purposefulRevision)}
    <p>Copy the revision above, switch to the <strong>same Gemini conversation</strong>, and submit it.</p>
@@ -727,9 +722,9 @@ function render(){
    <p class="lead"><strong>Can the new response accomplish your original task?</strong></p>
    <button class="choice" onclick="iterativeUsabilityChoice('yes')"><strong>Yes — This response is usable for my original task</strong></button>
    <button class="choice" onclick="iterativeUsabilityChoice('no')"><strong>No — It still does not accomplish my original task</strong></button>
-   <div class="actions"><button onclick="next(21)">Back</button></div>`);
+   <div class="actions"><button onclick="next(20)">Back</button></div>`);
  }
- else if(screen===23){
+ else if(screen===22){
   shell("Before You Rely on the Response",`
    ${artifact("Current Usable Gemini Response",state.currentUsableResponse)}
    <p>You have determined that the response can accomplish the task you originally gave Gemini. Before you rely on it, consider whether anything in the response needs to be verified.</p>
@@ -742,9 +737,9 @@ function render(){
     <li><strong>Does the work depend on a specific policy, requirement, procedure, source, or current information?</strong></li>
     <li><strong>What could happen if any of that information were wrong?</strong></li>
    </ul>
-   <div class="actions"><button class="primary" onclick="next(24)">Continue</button></div>`);
+   <div class="actions"><button class="primary" onclick="next(23)">Continue</button></div>`);
  }
- else if(screen===24){
+ else if(screen===23){
   const verifyMsg = state.verificationDecision==="verify"
     ? `<div class="warning"><strong>I still need to verify information.</strong><br>Verify the information you need to rely on using an appropriate source. Then return here and answer the verification question again.</div>`
     : ``;
@@ -764,9 +759,9 @@ function render(){
      <button class="choice" onclick="verificationFollowup('revise')"><strong>Verification identified something that needs to change</strong></button>
    ` : ``}
    ${verifyMsg}
-   <div class="actions"><button onclick="next(23)">Back</button></div>`);
+   <div class="actions"><button onclick="next(22)">Back</button></div>`);
  }
- else if(screen===25){
+ else if(screen===24){
   if(state.completionMessage){
    shell("Activity Complete",`
     <div class="success"><strong>${esc(state.completionMessage)}</strong></div>
